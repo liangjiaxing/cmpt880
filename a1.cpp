@@ -4,8 +4,18 @@
 using namespace std;
 
 const int MAXN = 1000;
+const int M = 6;
 
-char x[MAXN] = "AGCGUUGCGCACUU";
+char cases[][MAXN] = {
+    "AGCGUUGCGCACUU",
+    "AAAAAAAAAAAAAA",
+    "AAAAAAAUUUUUUU",
+    "AGCU",
+    "",
+    "A"
+    };
+
+char *x;
 
 int N[MAXN][MAXN];
 
@@ -60,19 +70,21 @@ void printOpt(int i, int j) {
 
 int main() {
 	//scanf("%s", x);
-	int n = strlen(x);
+	for (int re = 0; re < M; re++) {
+	    x = cases[re];
+        int n = strlen(x);
+        // set all the value in array N as 0.
+        memset(N, -1, sizeof(N));
 
-	// set all the value in array N as 0.
-	memset(N, -1, sizeof(N));
+        N[0][0] = 0;
+        for (int i = 1; i < n; i++) {
+            N[i][i] = 0;
+            N[i][i - 1] = 0;
+        }
 
-	N[0][0] = 0;
-	for (int i = 1; i < n; i++) {
-		N[i][i] = 0;
-		N[i][i - 1] = 0;
+        printf("Answer: %d\n", solve(0, n - 1));
+        puts(x);
+        printOpt(0, n - 1);
+        puts("\n");
 	}
-
-	printf("Answer: %d\n", solve(0, n - 1));
-	puts(x);
-	printOpt(0, n - 1);
-	puts("");
 }
