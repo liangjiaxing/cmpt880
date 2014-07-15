@@ -59,8 +59,9 @@ void printOpt(int i, int j) {
 }
 
 int main() {
-	// scanf("%s", x);
+	scanf("%s", x);
 	int n = strlen(x);
+	
 	
 	// set all the value in array N as 0.
 	memset(N, -1, sizeof(N));
