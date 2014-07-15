@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
+#include <stack>
+#include <string>
 using namespace std;
 
 const int MAXN = 1000;
@@ -68,11 +70,38 @@ void printOpt(int i, int j) {
 	}
 }
 
+int ans;
+int n;
+stack<char> st;
+int counts;
+
+void printAllOpts(int m, int cnt, string s) {
+    // printf("%d\n", m);
+    if (m >= n) {
+        if (cnt == ans && st.empty()) {
+            puts(s.c_str());
+            counts++;
+        }
+        return;
+    }
+
+    if (!st.empty() && (match(st.top(), x[m]) || match(x[m], st.top()))) {
+        int t = st.top();
+        st.pop();
+        printAllOpts(m + 1, cnt + 1, s + ')');
+        st.push(t);
+    }
+    st.push(x[m]);
+    printAllOpts(m + 1, cnt, s + '(');
+    st.pop();
+    printAllOpts(m + 1, cnt, s + '.');
+}
+
 int main() {
 	//scanf("%s", x);
 	for (int re = 0; re < M; re++) {
 	    x = cases[re];
-        int n = strlen(x);
+        n = strlen(x);
         // set all the value in array N as 0.
         memset(N, -1, sizeof(N));
 
@@ -81,10 +110,12 @@ int main() {
             N[i][i] = 0;
             N[i][i - 1] = 0;
         }
-
-        printf("Answer: %d\n", solve(0, n - 1));
+        ans = solve(0, n - 1);
+        printf("Answer: %d\n", ans);
         puts(x);
-        printOpt(0, n - 1);
+        // printOpt(0, n - 1); puts("");
+        counts = 0;
+        printAllOpts(0, 0, ""); printf("number of optimal: %d\n", counts);
         puts("\n");
 	}
 }
